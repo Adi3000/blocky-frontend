@@ -1,13 +1,10 @@
 import { FC, useState } from 'react'
-import { dnsQuery, refreshLists } from '../utils/api'
-import { useMutation, useQueryClient } from 'react-query'
+import { dnsQuery } from '../utils/api'
 import toast from 'react-hot-toast'
 
 const queryTypes = ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'TXT']
 
 export const DNSQuery: FC = () => {
-  const queryClient = useQueryClient()
-
   const [ip, setIP] = useState<string>('')
   const [type, setType] = useState<string>(queryTypes[0])
 
