@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   blocky:
-    image: ghcr.io/0xerr0r/blocky:v0.19
+    image: adi3000/blocky:fb-dns-cache-switch
     ports:
       - '54:53/tcp'
       - '54:53/udp'

@@ -3,7 +3,7 @@ import axios from 'redaxios'
 import { useQuery } from 'react-query'
 
 const getFullUrl = (url: string) => {
-  let baseUrl = 'http://localhost:4000/api'
+  let baseUrl = 'https://dns.adi3000.com/api'
   /* if (process.env.NODE_ENV === 'development') {
     baseUrl = 'http://localhost:4000/api'
   }
@@ -12,9 +12,7 @@ const getFullUrl = (url: string) => {
     baseUrl = process.env.API_URL + '/api'
   } */
 
-  const fullURL = `${baseUrl}${url}`
-  /* console.log(fullURL) */
-  return fullURL
+  return `${baseUrl}${url}`
 }
 
 export function useBlockingStatus() {
@@ -25,20 +23,32 @@ export function useBlockingStatus() {
   })
 }
 
+export function useDNSStatus() {
+  return useQuery(['dns'], async () => {
+    const url = getFullUrl('/dns/status')
+    const { data } = await axios.get(url)
+    return data
+  })
+}
+
 export function enableBlocking() {
   const url = getFullUrl('/blocking/enable')
   return axios.get(url)
 }
 
-export function disableBlocking() {
-  const url = getFullUrl('/blocking/disable')
-  return axios.get(url)
+export function disableBlocking(duration?: string) {
+  const url = getFullUrl('/blocking/disable?groups=parental')
+  return axios.get(url, { params: { duration: duration }})
+}
+
+export function disableDNS(duration?: string) {
+  const url = getFullUrl('/dns/disable?groups=adi-home')
+  return axios.get(url, { params: { duration: duration }})
 }
 
 export function refreshLists() {
   const url = getFullUrl('/lists/refresh')
-  const data = axios.post(url)
-  return data
+  return axios.post(url)
 }
 
 export interface IDNSQuery {
@@ -49,11 +59,10 @@ export interface IDNSQuery {
 
 export function dnsQuery({ ip, type }: IDNSQuery) {
   const url = getFullUrl('/query')
-  const data = axios.post(url, {
+  return axios.post(url, {
     query: ip,
     type
   })
-  return data
 }
 
 /* const options = {
