@@ -6,14 +6,14 @@ import {
 } from '../utils/api'
 import { useMutation, useQueryClient } from 'react-query'
 
-interface IBlockingStatus {
+export interface IBlockingStatus {
   enabled: boolean
   disabledGroups?: any
   autoEnableInSec: number
 }
 
 export const BlockingStatus: FC = () => {
-  const { status, data, error, isFetching } = useBlockingStatus()
+  const { status, data, error } = useBlockingStatus()
 
   const blockingData: IBlockingStatus = data
 
@@ -78,7 +78,7 @@ export function Banner({ status }: { status: boolean }) {
     }
   )
 
-  if (status === true) {
+  if (status) {
     return (
       <div className="relative bg-sky-600">
         <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
@@ -108,7 +108,7 @@ export function Banner({ status }: { status: boolean }) {
     )
   }
 
-  if (status === false) {
+
     return (
       <div className="relative bg-red-600">
         <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
@@ -136,7 +136,4 @@ export function Banner({ status }: { status: boolean }) {
         </div>
       </div>
     )
-  }
-
-  return null
 }
